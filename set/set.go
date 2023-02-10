@@ -78,6 +78,7 @@ func (s *Set[T]) UnmarshalJSON(data []byte) error {
 	}
 
 	slice := make([]T, 0)
+
 	err := json.Unmarshal(data, &slice)
 	if err != nil {
 		return err
