@@ -21,6 +21,12 @@ func (s Set[T]) Add(values ...T) {
 	}
 }
 
+func (s Set[T]) AddSet(other Set[T]) {
+	for value := range other {
+		s[value] = struct{}{}
+	}
+}
+
 // Contains returns true if the set contains the value.
 func (s Set[T]) Contains(value T) bool {
 	_, found := s[value]

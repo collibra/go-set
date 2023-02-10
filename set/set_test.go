@@ -355,3 +355,38 @@ func TestSet_MarshalJSON(t *testing.T) {
 	assert.NoError(t, err)
 	assert.Equal(t, s, ns)
 }
+
+func TestSet_AddSet(t *testing.T) {
+	type testCase[T comparable] struct {
+		name string
+		s    Set[T]
+		arg  Set[T]
+		want Set[T]
+	}
+	tests := []testCase[int]{
+		{
+			name: "empty set",
+			s:    NewSet[int](),
+			arg:  NewSet[int](),
+			want: NewSet[int](),
+		},
+		{
+			name: "single element",
+			s:    NewSet[int](),
+			arg:  NewSet[int](1),
+			want: NewSet[int](1),
+		},
+		{
+			name: "multiple elements",
+			s:    NewSet[int](1, 2, 3, 4, 5),
+			arg:  NewSet[int](3, 4, 5, 6, 7, 8),
+			want: NewSet[int](1, 2, 3, 4, 5, 6, 7, 8),
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			tt.s.AddSet(tt.arg)
+			assert.Equal(t, tt.want, tt.s)
+		})
+	}
+}
