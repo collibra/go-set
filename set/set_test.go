@@ -1,6 +1,7 @@
 package set
 
 import (
+	"encoding/json"
 	"reflect"
 	"testing"
 
@@ -333,4 +334,24 @@ func TestSet_Len(t *testing.T) {
 			assert.Equal(t, tt.want, got)
 		})
 	}
+}
+
+func TestSet_MarshalJSON(t *testing.T) {
+	// given
+	s := NewSet[int](2, 4, 5, 6, 7, 8)
+
+	// when
+	b, err := json.Marshal(s)
+
+	// then
+	assert.NoError(t, err)
+	assert.Regexp(t, "^\\[[0-9],[0-9],[0-9],[0-9],[0-9],[0-9]\\]", string(b))
+
+	// when
+	var ns Set[int]
+	err = json.Unmarshal(b, &ns)
+
+	// then
+	assert.NoError(t, err)
+	assert.Equal(t, s, ns)
 }

@@ -1,5 +1,7 @@
 package set
 
+import "encoding/json"
+
 // Set is a container that store unique elements in no particular order.
 // Sets are an alias for map[T]struct{} where T is a comparable type.
 type Set[T comparable] map[T]struct{}
@@ -64,4 +66,24 @@ func (s Set[T]) Slice() []T {
 	}
 
 	return slice
+}
+
+func (s Set[T]) MarshalJSON() ([]byte, error) {
+	return json.Marshal(s.Slice())
+}
+
+func (s *Set[T]) UnmarshalJSON(data []byte) error {
+	if (*s) == nil {
+		*s = make(Set[T])
+	}
+
+	slice := make([]T, 0)
+	err := json.Unmarshal(data, &slice)
+	if err != nil {
+		return err
+	}
+
+	s.Add(slice...)
+
+	return nil
 }
