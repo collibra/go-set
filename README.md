@@ -1,7 +1,6 @@
 # RAITO - GO set
 
-[![Go Report Card](https://goreportcard.com/badge/github.com/raito-io/golang-set)](https://goreportcard.com/report/github.com/raito-io/golang-set)
-![Version](https://img.shields.io/github/v/tag/raito-io/golang-set?sort=semver&label=version&color=651FFF)
+[![Go Report Card](https://goreportcard.com/badge/github.com/raito-io/golang-set)](https://goreportcard.com/report/github.com/raito-io/golang-set)![Version](https://img.shields.io/github/v/tag/raito-io/golang-set?sort=semver&label=version&color=651FFF)
 [![Build](https://img.shields.io/github/actions/workflow/status/raito-io/golang-set/build.yml?branch=main)](https://github.com/raito-io/golang-set/actions/workflows/build.yml)
 [![Coverage](https://img.shields.io/codecov/c/github/raito-io/golang-set?label=coverage)](https://app.codecov.io/gh/raito-io/golang-set)
 [![Contribute](https://img.shields.io/badge/Contribute-🙌-green.svg)](/CONTRIBUTING.md)
