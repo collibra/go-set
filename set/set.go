@@ -74,6 +74,17 @@ func (s Set[T]) Slice() []T {
 	return slice
 }
 
+func (s Set[T]) PtrSlice() []*T {
+	slice := make([]*T, 0, len(s))
+
+	for k := range s {
+		key := k
+		slice = append(slice, &key)
+	}
+
+	return slice
+}
+
 func (s Set[T]) MarshalJSON() ([]byte, error) {
 	return json.Marshal(s.Slice())
 }

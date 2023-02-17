@@ -304,6 +304,37 @@ func TestSet_Slice(t *testing.T) {
 	}
 }
 
+func TestSet_PtrSlice(t *testing.T) {
+	type testCase[T comparable] struct {
+		name string
+		s    Set[T]
+		want []*T
+	}
+	tests := []testCase[int]{
+		{
+			name: "empty set",
+			s:    NewSet[int](),
+			want: []*int{},
+		},
+		{
+			name: "single element",
+			s:    NewSet[int](1),
+			want: []*int{ptr(1)},
+		},
+		{
+			name: "multiple elements",
+			s:    NewSet[int](1, 2, 3, 4, 5),
+			want: []*int{ptr(1), ptr(2), ptr(3), ptr(4), ptr(5)},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got := tt.s.PtrSlice()
+			assert.ElementsMatch(t, tt.want, got)
+		})
+	}
+}
+
 func TestSet_Len(t *testing.T) {
 	type testCase[T comparable] struct {
 		name string
@@ -389,4 +420,8 @@ func TestSet_AddSet(t *testing.T) {
 			assert.Equal(t, tt.want, tt.s)
 		})
 	}
+}
+
+func ptr[T any](t T) *T {
+	return &t
 }
