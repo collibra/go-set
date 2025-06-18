@@ -24,7 +24,7 @@ jobs:
         run: go mod tidy
 
       - name: Lint
-        uses: golangci/golangci-lint-action@v3
+        uses: golangci/golangci-lint-action@v8
         with:
           version: v2.1.6
 
@@ -34,19 +34,19 @@ jobs:
       - name: Test
         run: make test
 
-      - name: Analyze with SonarCloud
-        uses: sonarsource/sonarcloud-github-action@master
+      - name: SonarQube Scan
+        uses: sonarsource/sonarqube-scan-action@v4
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SONAR_TOKEN: ${{ secrets.SONARQUBE_INTEGRATION_TOKEN }} # this is available in Collibra GH organization
+          SONAR_TOKEN: ${{ secrets.SONARQUBE_TOKEN }}
+          SONAR_HOST_URL: https://sonarqube.collibra.dev
         with:
           args: >
-            -Dsonar.host.url=https://sonarqube.collibra.com/
-            -Dsonar.projectKey=go-set
-            -Dsonar.sources=.
-            -Dsonar.exclusions=**/*_test.go,./.github/**
-            -Dsonar.tests=.
-            -Dsonar.test.inclusions=**/*_test.go
-            -Dsonar.scm.provider=git
-            -Dsonar.go.coverage.reportPaths=coverage.txt
-            -Dsonar.javascript.lcov.reportPaths=path-to-lcov.info
+            -Dsonar.pullrequest.github.repository=collibra/go-set
+
+      - name: SonarQube Quality Gate
+        uses: sonarsource/sonarqube-quality-gate-action@v1.1.0
+        timeout-minutes: 10
+        continue-on-error: true
+        env:
+          SONAR_TOKEN: ${{ secrets.SONARQUBE_TOKEN }}
+          SONAR_HOST_URL: https://sonarqube.collibra.dev
