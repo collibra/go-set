@@ -8,7 +8,7 @@ Set is a container that store unique elements in no particular order.
 Sets are an alias for `map[T]struct{}` where T is a comparable type.
 
 ## Getting Started
-Add this library as a dependency via `go get github.com/raito-io/golang-set`
+Add this library as a dependency via `go get github.com/collibra/go-set`
 
 ## Examples
 ```go
