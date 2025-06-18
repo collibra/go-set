@@ -14,9 +14,9 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Install Go
-        uses: actions/setup-go@v3
+        uses: actions/setup-go@v5
         with:
-          go-version: 1.18
+          go-version-file: go.mod
           cache: true
           cache-dependency-path: go.sum
 
@@ -26,7 +26,7 @@ jobs:
       - name: Lint
         uses: golangci/golangci-lint-action@v3
         with:
-          version: v1.50
+          version: v2.1.6
 
       - name: Build
         run: go build ./...
@@ -34,7 +34,19 @@ jobs:
       - name: Test
         run: make test
 
-      - uses: codecov/codecov-action@v3
+      - name: Analyze with SonarCloud
+        uses: sonarsource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONARQUBE_INTEGRATION_TOKEN }} # this is available in Collibra GH organization
         with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          file: ./coverage.txt
+          args: >
+            -Dsonar.host.url=https://sonarqube.collibra.com/
+            -Dsonar.projectKey=go-set
+            -Dsonar.sources=.
+            -Dsonar.exclusions=**/*_test.go,./.github/**
+            -Dsonar.tests=.
+            -Dsonar.test.inclusions=**/*_test.go
+            -Dsonar.scm.provider=git
+            -Dsonar.go.coverage.reportPaths=coverage.txt
+            -Dsonar.javascript.lcov.reportPaths=path-to-lcov.info

@@ -1,114 +1,135 @@
-linters-settings:
-  #check:
-    #check-type-assertions: true
-  goconst:
-    min-len: 2
-    min-occurrences: 3
-  gocritic:
-    enabled-tags:
-      - diagnostic
-      - experimental
-      - opinionated
-      - performance
-      - style
-    disabled-checks:
-      - dupImport # https://github.com/go-critic/go-critic/issues/845
-      - ifElseChain
-      - octalLiteral
-      - whyNoLint
-      - wrapperFunc
-      - importShadow # not important for now
-      - unnamedResult # not important
-      - hugeParam #to be checked
-      - commentFormatting
-      - paramTypeCombine
-
-  govet:
-    check-shadowing: true
-
-  revive:
-    rules:
-      - name: exported
-        disabled: true
-
-  wsl:
-    allow-assign-and-anything: true
-    allow-cuddle-declarations: true # should be false
-
-  nolintlint:
-    allow-no-explanation: [ ]
-    require-explanation: false
-    require-specific: false
-
-  gosec:
-    excludes:
-      - G404 # To be checked: Insecure random number source (rand)
-
-  stylecheck:
-    checks: [ "all", "-ST1003"] # ST1003: No underscores in package names should be fixed and removed?
-
-  predeclared:
-    ignore: "error"
-
-  gomnd:
-    ignored-functions:
-      - 'math.*' # Magic number generation, should be fixed and removed?
-
+version: "2"
+run:
+  issues-exit-code: 1
+  tests: false
+output:
+  path-prefix: ""
 linters:
-  disable-all: true
+  default: none
   enable:
+    - asasalint
     - bodyclose
-    - deadcode
-    - depguard
+    - copyloopvar
     - dogsled
     - dupl
+    - dupword
+    - durationcheck
     - errcheck
-    - exportloopref
+    - errorlint
     - exhaustive
     - forbidigo
     - goconst
     - gocritic
-    - gofmt
-    #- goimports #Issues with new version of goimports. Not able to parse issues
-    #- gomnd # Magic numbers should be fixed and enable gomnd,
     - gocyclo
     - gosec
-    - gosimple
     - govet
     - ineffassign
     - misspell
-    - nolintlint
     - nakedret
+    - nilerr
+    - nolintlint
     - prealloc
     - predeclared
     - revive
     - staticcheck
-    - structcheck
-    - stylecheck
     - thelper
     - tparallel
-    - typecheck
     - unconvert
     - unparam
-    - varcheck
+    - unused
     - whitespace
-   # - wrapcheck # 3th party errors should be wrapped to not lose context
     - wsl
-
-run:
-  issues-exit-code: 1
-  tests: false
-  skip-dirs:
-    - cdk/
-    - graphql/generated/*
-    - global/testing/*
-
-  skip-dirs-use-default: false
-
-output:
-  path-prefix: ""
-  sort-results: true
-  format: github-actions
-  print-issued-lines: true
-  print-linter-name: true
+  settings:
+    cyclop:
+      max-complexity: 20
+      package-average: 0
+    errorlint:
+      errorf: true
+      errorf-multi: true
+      asserts: true
+      comparison: true
+    exhaustive:
+      default-signifies-exhaustive: true
+    goconst:
+      min-len: 2
+      min-occurrences: 3
+    gocritic:
+      disabled-checks:
+        - dupImport
+        - ifElseChain
+        - octalLiteral
+        - whyNoLint
+        - wrapperFunc
+        - importShadow
+        - unnamedResult
+        - hugeParam
+        - commentFormatting
+        - paramTypeCombine
+      enabled-tags:
+        - diagnostic
+        - experimental
+        - opinionated
+        - performance
+        - style
+    gosec:
+      excludes:
+        - G404
+    govet:
+      enable:
+        - shadow
+    nolintlint:
+      require-explanation: false
+      require-specific: false
+    predeclared:
+      ignore:
+        - error
+    revive:
+      rules:
+        - name: exported
+          disabled: true
+    staticcheck:
+      checks:
+        - all
+        - -ST1003
+    wrapcheck:
+      ignore-sigs:
+        - .Errorf(
+        - errors.New(
+        - errors.Unwrap(
+        - .Wrap(
+        - .Wrapf(
+        - .WithMessage(
+        - .WithMessagef(
+        - .WithStack(
+        - go-multierror.Append(
+    wsl:
+      allow-assign-and-anything: true
+      allow-cuddle-declarations: true
+  exclusions:
+    generated: lax
+    presets:
+      - comments
+      - common-false-positives
+      - legacy
+      - std-error-handling
+    rules:
+      - linters:
+          - cyclop
+        path: (.+)_test\.go
+    paths:
+      - third_party$
+      - builtin$
+      - examples$
+issues:
   uniq-by-line: false
+  new-from-merge-base: main # ONLY lint new changes that are not in main branch
+formatters:
+  enable:
+    - gofmt
+    - goimports
+  exclusions:
+    generated: lax
+    paths:
+      - third_party$
+      - builtin$
+      - examples$
