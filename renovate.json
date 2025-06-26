@@ -4,10 +4,6 @@
     "baseBranches": [
         "main"
     ],
-    "enabledManagers": [
-        "gomod",
-        "github-actions"
-    ],
     "branchPrefix": "renovate-",
     "dependencyDashboard": false,
     "extends": [
