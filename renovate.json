@@ -6,6 +6,7 @@
     ],
     "enabledManagers": [
         "gomod",
+        "github-actions"
     ],
     "branchPrefix": "renovate-",
     "dependencyDashboard": false,
