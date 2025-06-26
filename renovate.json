@@ -6,7 +6,6 @@
     ],
     "enabledManagers": [
         "gomod",
-        "dockerfile"
     ],
     "branchPrefix": "renovate-",
     "dependencyDashboard": false,
@@ -30,9 +29,6 @@
     ],
     "prHourlyLimit": 10,
     "rebaseWhen": "behind-base-branch",
-    "registryAliases": {
-        "mirror-docker.repository.collibra.io": "index.docker.io"
-    },
     "reviewersSampleSize": 1,
     "schedule": [
         "at any time"
