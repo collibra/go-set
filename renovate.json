@@ -10,6 +10,21 @@
         "config:recommended",
         "group:allNonMajor"
     ],
+    "enabledManagers": [
+        "gomod"
+    ],
+    "packageRules": [
+        {
+            "managers": [
+                "gomod"
+            ],
+            "matchUpdateTypes": [
+                "minor",
+                "patch"
+            ],
+            "groupName": "go minor and patch dependencies"
+        }
+    ],
     "hashedBranchLength": 24,
     "labels": [
         "dependency-update"
