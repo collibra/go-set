@@ -38,7 +38,7 @@ linters:
     - unparam
     - unused
     - whitespace
-    - wsl
+    - wsl_v5
   settings:
     cyclop:
       max-complexity: 20
@@ -102,9 +102,13 @@ linters:
         - .WithMessagef(
         - .WithStack(
         - go-multierror.Append(
-    wsl:
-      allow-assign-and-anything: true
-      allow-cuddle-declarations: true
+    wsl_v5:
+      allow-first-in-block: true
+      allow-whole-block: false
+      branch-max-lines: 2
+      disable:
+        - assign
+        - decl
   exclusions:
     generated: lax
     presets:
