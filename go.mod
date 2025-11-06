@@ -1,6 +1,6 @@
 module github.com/collibra/go-set
 
-go 1.25.2
+go 1.25.4
 
 require github.com/stretchr/testify v1.11.1
 
